@@ -26,11 +26,11 @@ async def command_start_process(message:Message, dialog_manager: DialogManager, 
             "first_name": user_name,
             # "created_at": datetime.utcnow().isoformat()
         })
-    # all_keys = await r.keys("*")
-    # print('all keys = ', all_keys)
+    await r.sadd("users", user_id)  #  Добавляю в сэт tg_us_id
+    users_started_bot_allready = await r.scard("users")  #  Считаю юзеров
 
     await message.answer(text=f'Hallo, {html.bold(html.quote(user_name))}!\nIch bin MINI APP Bot'
-                              f'Ich wurde bereits von {len(users_db)} Nutzern, wie Ihnen, gestartet. 🎲', reply_markup=ReplyKeyboardRemove())
+                              f'Ich wurde bereits von <b>{users_started_bot_allready}</b> Nutzern, wie Ihnen, gestartet. 🎲', reply_markup=ReplyKeyboardRemove())
     await message.answer("Bitte klicken Sie auf den <b>Burg</b>, um die Web-App zu öffnen. ↙️"),
     await dialog_manager.start(state=FSM_ST.spam, mode=StartMode.RESET_STACK)
 
